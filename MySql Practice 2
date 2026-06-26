@@ -1,0 +1,168 @@
+CREATE TABLE departments (dept_id INT PRIMARY KEY, dept_name VARCHAR(50));
+
+insert into departments value(101, 'IT');
+insert into departments value(102, 'HR');
+insert into departments value(103, 'Finance');
+
+CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(50), dept_id INT, salary DECIMAL(10,2), FOREIGN KEY (dept_id) REFERENCES departments(dept_id));
+
+insert into employees value(1, 'Amit', 101, 50000);
+insert into employees value(2, 'Neha', 102, 60000);
+insert into employees value(3, 'Raj', 101, 55000);
+insert into employees value(4, 'Priya', 103, 70000);
+
+select * from employees;
++----+-------+---------+----------+
+| id | name  | dept_id | salary   |
++----+-------+---------+----------+
+|  1 | Amit  |     101 | 50000.00 |
+|  2 | Neha  |     102 | 60000.00 |
+|  3 | Raj   |     101 | 55000.00 |
+|  4 | Priya |     103 | 70000.00 |
++----+-------+---------+----------+
+
+select name from employees;
++-------+
+| name  |
++-------+
+| Amit  |
+| Neha  |
+| Raj   |
+| Priya |
++-------+
+
+select * from employees where salary > 55000;
++----+-------+---------+----------+
+| id | name  | dept_id | salary   |
++----+-------+---------+----------+
+|  2 | Neha  |     102 | 60000.00 |
+|  4 | Priya |     103 | 70000.00 |
++----+-------+---------+----------+
+
+select * from employees where dept_id = 101;
++----+------+---------+----------+
+| id | name | dept_id | salary   |
++----+------+---------+----------+
+|  1 | Amit |     101 | 50000.00 |
+|  3 | Raj  |     101 | 55000.00 |
++----+------+---------+----------+
+
+ select * from employees order by salary desc;
++----+-------+---------+----------+
+| id | name  | dept_id | salary   |
++----+-------+---------+----------+
+|  4 | Priya |     103 | 70000.00 |
+|  2 | Neha  |     102 | 60000.00 |
+|  3 | Raj   |     101 | 55000.00 |
+|  1 | Amit  |     101 | 50000.00 |
++----+-------+---------+----------+
+
+select count(*) from employees;
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+
+ select min(salary) from employees;
++-------------+
+| min(salary) |
++-------------+
+|    50000.00 |
++-------------+
+
+ select max(salary) from employees;
++-------------+
+| max(salary) |
++-------------+
+|    70000.00 |
++-------------+
+
+select avg(salary) from employees;
++--------------+
+| avg(salary)  |
++--------------+
+| 58750.000000 |
++--------------+
+
+select dept_id, count(*) from employees group by dept_id;
++---------+----------+
+| dept_id | count(*) |
++---------+----------+
+|     101 |        2 |
+|     102 |        1 |
+|     103 |        1 |
++---------+----------+
+
+select dept_id, sum(salary) from employees group by dept_id;
++---------+-------------+
+| dept_id | sum(salary) |
++---------+-------------+
+|     101 |   105000.00 |
+|     102 |    60000.00 |
+|     103 |    70000.00 |
++---------+-------------+
+
+select dept_id, count(*) from employees group by dept_id having count(*) > 1;
++---------+----------+
+| dept_id | count(*) |
++---------+----------+
+|     101 |        2 |
++---------+----------+
+
+select e.name, d.dept_name from employees e inner join departments d on e.dept_id = d.dept_id;
++-------+-----------+
+| name  | dept_name |
++-------+-----------+
+| Amit  | IT        |
+| Raj   | IT        |
+| Neha  | HR        |
+| Priya | Finance   |
++-------+-----------+
+
+select e.name, d.dept_name from employees e left join departments d on e.dept_id = d.dept_id;
++-------+-----------+
+| name  | dept_name |
++-------+-----------+
+| Amit  | IT        |
+| Neha  | HR        |
+| Raj   | IT        |
+| Priya | Finance   |
++-------+-----------+
+
+select max(salary) from employees where salary < (select max(salary) from employees);
++-------------+
+| max(salary) |
++-------------+
+|    60000.00 |
++-------------+
+
+select * from employees where salary = (select max(salary) from employees);
++----+-------+---------+----------+
+| id | name  | dept_id | salary   |
++----+-------+---------+----------+
+|  4 | Priya |     103 | 70000.00 |
++----+-------+---------+----------+
+
+select dept_id, count(*) from employees group by dept_id having count(*) > 1;
++---------+----------+
+| dept_id | count(*) |
++---------+----------+
+|     101 |        2 |
++---------+----------+
+
+ select * from employees where name like 'A%';
++----+------+---------+----------+
+| id | name | dept_id | salary   |
++----+------+---------+----------+
+|  1 | Amit |     101 | 50000.00 |
++----+------+---------+----------+
+
+select * from employees where salary between 50000 and 65000;
++----+------+---------+----------+
+| id | name | dept_id | salary   |
++----+------+---------+----------+
+|  1 | Amit |     101 | 50000.00 |
+|  2 | Neha |     102 | 60000.00 |
+|  3 | Raj  |     101 | 55000.00 |
++----+------+---------+----------+
