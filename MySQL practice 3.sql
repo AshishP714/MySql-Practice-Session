@@ -1,9 +1,3 @@
--- -------------------------------------------------------------
--- MySQL Script Example: Company Database Setup & Initial Data
--- Save this file as setup_company.sql
--- -------------------------------------------------------------
-
--- 1. Initialize Database Environment
 DROP DATABASE IF EXISTS company_db;
 CREATE DATABASE company_db;
 USE company_db;
